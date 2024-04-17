@@ -127,11 +127,6 @@ bot.on('text', async (ctx) => {
 ┃⿻ /temp
 ┃⿻ /pushkontakmenu
 ┃⿻ /cekidgc
-┃⿻ /translate
-┃⿻ /translatemenu
-┃⿻ /ddosmenu
-┃⿻ /startattack
-┃⿻ /stopattack
 ┃⿻ /pushkontak
 ┃⿻ /jpm
 ┃⿻ /bc
