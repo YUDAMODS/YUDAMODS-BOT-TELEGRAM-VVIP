@@ -389,10 +389,9 @@ const dropNumber = async (context) => {
     }
 };
 
-    default:
-        break;
-  }
-});
+   // default:
+     //   break;
+  //}
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
