@@ -178,6 +178,19 @@ bot.on('text', async (ctx) => {
         ctx.replyWithPhoto(thumbPath, { caption: `Terjadi kesalahan: ${error.message}` });
     }
     break;
+    
+    case '/pushkontakmenu':
+    const keyboard = {
+        reply_markup: {
+            keyboard: [
+                [{ text: '/lanjutkan' }]
+            ],
+            resize_keyboard: true
+        }
+    };
+    
+    ctx.replyWithPhoto(thumbPath, { caption: `Anda yakin dengan pilihan Anda? Whatsapp Anda dapat diblokir jika baru saja menautkan dengan bot. Silahkan ketik /lanjutkan untuk melanjutkan.`, keyboard });
+    break;
 
     case '/lanjutkan':
         const lanjutkanText = `${greeting} Kak ${name}!
