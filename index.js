@@ -40,20 +40,6 @@ bot.start((ctx) => {
     }
 });
 
-bot.on('text', (ctx) => {
-  const messageText = ctx.message.text;
-
-  switch (messageText) {
-    case '/owner':
-      // Mengirim link Telegram Anda dalam format kontak
-      ctx.replyWithContact({ phone_number: 't.me/YUDAMODS', first_name: 'YUDAMODS' });
-      break;
-    default:
-      break;
-  }
-});
-
-
 bot.command('bc', (ctx) => {
     const bcMessage = ctx.message.text.split(' ').slice(1).join(' ');
 
@@ -236,7 +222,7 @@ bot.on('text', async (ctx) => {
       
       
       case '/translatemenu':
-      const allmenuText = `${greeting} Kak ${name}!
+      const translateText = `${greeting} Kak ${name}!
 
 ╭──❏「 𝗜𝗡𝗙𝗢 𝗨𝗦𝗘𝗥 」❏
 ├ Nama = ${name}
@@ -252,11 +238,11 @@ bot.on('text', async (ctx) => {
 ┗━━━━━[ YUDAMODS  ]━━━━
        
           ⌕ █║▌║▌║ - ║▌║▌║█ ⌕`;
-      ctx.replyWithPhoto(thumbPath, { caption: allmenuText });
+      ctx.replyWithPhoto(thumbPath, { caption: translateText });
       break;
       
       case '/ddosmenu':
-      const allmenuText = `${greeting} Kak ${name}!
+      const ddosText = `${greeting} Kak ${name}!
 
 ╭──❏「 𝗜𝗡𝗙𝗢 𝗨𝗦𝗘𝗥 」❏
 ├ Nama = ${name}
@@ -273,7 +259,7 @@ bot.on('text', async (ctx) => {
 ┗━━━━━[ YUDAMODS  ]━━━━
        
           ⌕ █║▌║▌║ - ║▌║▌║█ ⌕`;
-      ctx.replyWithPhoto(thumbPath, { caption: allmenuText });
+      ctx.replyWithPhoto(thumbPath, { caption: ddosText });
       break;
 
     case '/pushkontakmenu':
@@ -330,6 +316,11 @@ bot.on('text', async (ctx) => {
         ctx.replyWithPhoto(thumbPath, { caption: `Terjadi kesalahan: ${error.message}` });
     }
     break;
+    
+    case '/owner':
+      // Mengirim link Telegram Anda dalam format kontak
+      ctx.replyWithContact({ phone_number: 't.me/YUDAMODS', first_name: 'YUDAMODS' });
+      break;
 
     case '/lanjutkan':
         const lanjutkanText = `${greeting} Kak ${name}!
