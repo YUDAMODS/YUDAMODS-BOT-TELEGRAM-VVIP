@@ -14,11 +14,13 @@ let userList = [];
 
 const thumbPath = 'https://telegra.ph/file/ba12c1ba24d23404c1e00.jpg';
 
-bot.start((ctx) => bot.sendPhoto(ctx.chat.id, thumbPath, { caption: 'Welcome to the WhatsApp submission bot! Use /menu to view all menu.' }));
+bot.start((ctx) => {
+    ctx.replyWithPhoto({ url: thumbPath, caption: 'Welcome to the WhatsApp submission bot! Use /menu to view all menu.' });
+});
 
 bot.use((ctx, next) => {
-  console.log(`[${new Date().toLocaleString()}] Received message from ${ctx.from.username}: ${ctx.message.text}`);
-  next();
+    console.log(`[${new Date().toLocaleString()}] Received message from ${ctx.from.username}: ${ctx.message.text}`);
+    next();
 });
 
 bot.start((ctx) => {
@@ -51,6 +53,7 @@ bot.command('bc', (ctx) => {
             break;
     }
 });
+
 
 bot.command('jpm', (ctx) => {
     const jpmMessage = ctx.message.text.split(' ').slice(1).join(' ');
@@ -99,7 +102,7 @@ bot.on('text', async (ctx) => {
 ┗━━━━━[ YUDAMODS  ]━━━━
        
           ⌕ █║▌║▌║ - ║▌║▌║█ ⌕`;
-      bot.sendPhoto(ctx.chat.id, thumbPath, { caption: menuText });
+      ctx.replyWithPhoto(thumbPath, { caption: menuText });
       break;
 
     case '/allmenu':
@@ -124,7 +127,7 @@ bot.on('text', async (ctx) => {
 ┗━━━━━[ YUDAMODS  ]━━━━
        
           ⌕ █║▌║▌║ - ║▌║▌║█ ⌕`;
-      bot.sendPhoto(ctx.chat.id, thumbPath, { caption: allmenuText });
+      ctx.replyWithPhoto(thumbPath, { caption: allmenuText });
       break;
 
     case '/pushkontakmenu':
@@ -137,7 +140,7 @@ bot.on('text', async (ctx) => {
         }
     };
     
-    bot.sendPhoto(ctx.chat.id, thumbPath, { caption: `Anda yakin dengan pilihan Anda? Whatsapp Anda dapat diblokir jika baru saja menautkan dengan bot. Silahkan ketik /lanjutkan untuk melanjutkan.`, keyboard });
+    ctx.replyWithPhoto(thumbPath, { caption: `Anda yakin dengan pilihan Anda? Whatsapp Anda dapat diblokir jika baru saja menautkan dengan bot. Silahkan ketik /lanjutkan untuk melanjutkan.`, keyboard });
     break;
 
     case '/pushkontak':
@@ -145,7 +148,7 @@ bot.on('text', async (ctx) => {
     const pushkontakParams = pushkontakArgs.split('|');
 
     if (pushkontakParams.length !== 3) {
-        bot.sendPhoto(ctx.chat.id, thumbPath, { caption: "Format yang Anda masukkan salah. Silakan gunakan format: /pushkontak idgroup|jeda|teks" });
+        ctx.replyWithPhoto(thumbPath, { caption: "Format yang Anda masukkan salah. Silakan gunakan format: /pushkontak idgroup|jeda|teks" });
         return;
     }
 
@@ -154,11 +157,11 @@ bot.on('text', async (ctx) => {
     const teks = pushkontakParams[2];
 
     if (!idGroup || !jeda || !teks) {
-        bot.sendPhoto(ctx.chat.id, thumbPath, { caption: "Format yang Anda masukkan salah. Silakan gunakan format: /pushkontak idgroup|jeda|teks" });
+        ctx.replyWithPhoto(thumbPath, { caption: "Format yang Anda masukkan salah. Silakan gunakan format: /pushkontak idgroup|jeda|teks" });
         return;
     }
 
-    bot.sendPhoto(ctx.chat.id, thumbPath, { caption: "Proses pengiriman kontak sedang berlangsung..." });
+    ctx.replyWithPhoto(thumbPath, { caption: "Proses pengiriman kontak sedang berlangsung..." });
 
     try {
         const groupMetadata = await ctx.getChat(idGroup);
@@ -176,9 +179,9 @@ bot.on('text', async (ctx) => {
             }
         }
 
-        bot.sendPhoto(ctx.chat.id, thumbPath, { caption: "Pengiriman kontak selesai!" });
+        ctx.replyWithPhoto(thumbPath, { caption: "Pengiriman kontak selesai!" });
     } catch (error) {
-        bot.sendPhoto(ctx.chat.id, thumbPath, { caption: `Terjadi kesalahan: ${error.message}` });
+        ctx.replyWithPhoto(thumbPath, { caption: `Terjadi kesalahan: ${error.message}` });
     }
     break;
 
@@ -202,12 +205,12 @@ bot.on('text', async (ctx) => {
 ┗━━━━━[ YUDAMODS  ]━━━━
        
           ⌕ █║▌║▌║ - ║▌║▌║█ ⌕`;
-        bot.sendPhoto(ctx.chat.id, thumbPath, { caption: lanjutkanText });
+        ctx.replyWithPhoto(thumbPath, { caption: lanjutkanText });
         break;
 
     case '/cekidgc':
         const chatId = ctx.message.chat.id;
-        bot.sendPhoto(ctx.chat.id, thumbPath, { caption: `Cek ID Group:\nChat ID: ${chatId}` });
+        ctx.replyWithPhoto(thumbPath, { caption: `Cek ID Group:\nChat ID: ${chatId}` });
         break;
 
     default:
